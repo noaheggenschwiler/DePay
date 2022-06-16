@@ -1,24 +1,22 @@
 import logo from './logo.svg';
 import './App.css';
+import Container from '@mui/material/Container';
+import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Stack from '@mui/material/Stack';
+import LeftPanel from './LeftPanel.js';
+import PriceFeed from './PriceFeed.js';
+import Payment from './Payment.js';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Stack direction = "row" spacing={2} justifyContent="space-evenly">
+      <LeftPanel></LeftPanel>
+      <Payment></Payment>
+      <PriceFeed></PriceFeed>
+    </Stack>
+    
   );
 }
 
