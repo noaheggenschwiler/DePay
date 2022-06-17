@@ -6,6 +6,8 @@ import Grid from '@mui/material/Grid';
 import Card from "@mui/material/Card";
 import bitcoin from "./images/bitcoin.png";
 import ethereumLogo from "./images/Ethereum-Logo.png";
+import chainlink from "./images/chainlink-logo.jpeg";
+import poly from "./images/polygon-matic-logo.png";
 import CardMedia from '@mui/material/CardMedia';
 import CardActions from '@mui/material/CardActions';
 import Button from '@mui/material/Button';
@@ -24,7 +26,7 @@ const PriceFeed = () => {
         }} flex={1}>
             <Stack direction="column" spacing={2} alignItems="center" overflow="auto">
                 <Typography variant="h1" align="center" color="white" fontSize={50} fontWeight="bold" paddingTop={5}> Current Price Feed </Typography>
-                <List sx={{maxHeight: 600, overflow: 'auto'}}>
+                <List sx={{maxHeight: 650, overflow: 'auto'}}>
                     <ListItem>
                         <Card variant="outlined" sx={{ width: 400, maxHeight : 250}}>
                             <CardMedia
@@ -64,15 +66,15 @@ const PriceFeed = () => {
                             <CardMedia
                                 component="img"
                                 height="100"
-                                src={ethereumLogo}
+                                src={chainlink}
                             >
                             </CardMedia>
                             <CardContent>
-                                <Typography gutterBottom variant="h5" component="div"> Ethereum </Typography>
+                                <Typography gutterBottom variant="h5" component="div"> Chainlink </Typography>
                                 <Typography variant="body2" color="text.secondary"> Current Price: $21,344 </Typography>
                             </CardContent>
                             <CardActions>
-                                <Button href="https://ethereum.org/en/" size="small">Learn More</Button>
+                                <Button href="https://chain.link/" size="small">Learn More</Button>
                             </CardActions>
                         </Card>
                     </ListItem>
@@ -81,15 +83,15 @@ const PriceFeed = () => {
                             <CardMedia
                                 component="img"
                                 height="100"
-                                src={ethereumLogo}
+                                src={poly}
                             >
                             </CardMedia>
                             <CardContent>
-                                <Typography gutterBottom variant="h5" component="div"> Ethereum </Typography>
+                                <Typography gutterBottom variant="h5" component="div"> Polygon </Typography>
                                 <Typography variant="body2" color="text.secondary"> Current Price: $21,344 </Typography>
                             </CardContent>
                             <CardActions>
-                                <Button href="https://ethereum.org/en/" size="small">Learn More</Button>
+                                <Button href="https://polygon.technology/" size="small">Learn More</Button>
                             </CardActions>
                         </Card>
                     </ListItem>

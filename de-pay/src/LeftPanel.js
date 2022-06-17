@@ -26,9 +26,9 @@ const LeftPanel = () => {
             ></CardMedia>
             <Typography variant='h4' align='center' color='white' sx={{
                 paddingTop : '20px'
-            }}> Recent Transactions </Typography>
+            }}> Recent Transactions on DePay </Typography>
             <Paper elevation={3} sx={{overflow: 'auto', margin: "10px",}}>
-                <List>
+                <List sx = {{maxHeight: 200}}>
                     <ListItem>
                         <ListItemText> Hello World </ListItemText>
                     </ListItem>
