@@ -1,6 +1,6 @@
 import React from 'react';
 import Box from '@mui/material/Box';
-import { ButtonGroup, Typography } from '@mui/material';
+import { Alert, ButtonGroup, Dialog, DialogContent, DialogContentText, Typography } from '@mui/material';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import AddCard from '@mui/icons-material/AddCard';
@@ -9,6 +9,7 @@ import Paid from '@mui/icons-material/Paid';
 import {ethers} from "ethers";
 import { useEffect, useState , useRef} from "react";
 import InputAdornment from '@mui/material/InputAdornment';
+import Message from './Message.js'
 
 const Payment = () => {
     /*
@@ -24,7 +25,13 @@ const Payment = () => {
     const [reciever, setReciever] = useState("");
 
     //State Variable For Error Handling
-    const [error, setError] = useState("");
+    const [message, setMessage] = useState("");
+
+    // Used for Setting Type of Message to Display, if Transaction is successful or not
+    const [msgType, setType] = useState("");
+
+    //Used For Opening Error Messages
+    const [open, setOpen] = useState(true);
 
     //On Change Of Amount ETH Entered
     const handleAmountETHChange = event => {
@@ -59,7 +66,7 @@ const Payment = () => {
             console.log("No authorized account found")
         }
         } catch (error) {
-        console.log(error);
+            console.log(error);
         }
     }
 
@@ -79,6 +86,9 @@ const Payment = () => {
 
         console.log("Connected", accounts[0]);
         setCurrentAccount(accounts[0]);
+        setMessage("MetaMask Wallet Already Connected");
+        setType("success")
+        setOpen(true);
         } catch (error) {
             console.log(error)
         }
@@ -96,17 +106,32 @@ const Payment = () => {
             }
             const provider = new ethers.providers.Web3Provider(window.ethereum);
             const signer = provider.getSigner();
-            ethers.utils.getAddress(reciever);
+            let validAddress = ethers.utils.isAddress(reciever);
+            if(validAddress == false){
+                throw new Error("Invalid Address");
+            }
             const tx = await signer.sendTransaction({
                 to : reciever,
                 value : ethers.utils.parseEther(amountETH),
             })
+            setType("success");
+            let successMsg = 'Sucessfully Sent ETH to: \n' + reciever;
+            setMessage(successMsg);
+            setOpen(true);
         } catch(err){
-            setError(err);
+            console.log(err.message);
+            setOpen(true);
+            setType("err");
+            if(err.message == "Invalid Address"){
+                setMessage("Payment Failed, Invalid Address"); 
+            }
+            else{
+                setMessage("Payment Failed"); 
+            }
+
         } 
     }
-
-    
+ 
     return (
         <Box sx={{
             backgroundColor : 'white',
@@ -120,6 +145,7 @@ const Payment = () => {
                 <TextField id="outlined-basic" label="Recipient Address" required variant="outlined" value={reciever} onChange={handleRecieverChange} />
                 <Button variant="contained" startIcon={<AddCard/>} onClick={connectWallet}> Connect MetaMask Wallet </Button>
                 <Button variant="contained" startIcon={<Paid/>} onClick={payNow}> Pay Now </Button>
+                <Message message={message} type={msgType} open={open} setOpen={setOpen}/> 
             </Stack> 
         </Box>
     )
