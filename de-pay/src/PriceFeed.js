@@ -16,9 +16,17 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-
+import PriceCards from './PriceCards';
+import { useState } from "react";
 
 const PriceFeed = () => {
+
+    const [BTCPrice, setBTCPrice] = useState("");
+    const [ETHPrice, setETHPrice] = useState("");
+    const [LINKPrice, setLINKPrice] = useState("");
+
+    //let currentPrices = getContractPrices();
+
     return (
     <Box sx={{
             backgroundColor : '#283149',
@@ -37,7 +45,7 @@ const PriceFeed = () => {
                             </CardMedia>
                             <CardContent>
                                 <Typography gutterBottom variant="h5" component="div"> Bitcoin </Typography>
-                                <Typography variant="body2" color="text.secondary"> Current Price: $21,344</Typography>
+                                <Typography variant="body2" color="text.secondary"> Current Price: ${BTCPrice}</Typography>
                             </CardContent>
                             <CardActions>
                                 <Button href="https://bitcoin.org/en/" size="small">Learn More</Button>
@@ -54,7 +62,7 @@ const PriceFeed = () => {
                             </CardMedia>
                             <CardContent>
                                 <Typography gutterBottom variant="h5" component="div"> Ethereum </Typography>
-                                <Typography variant="body2" color="text.secondary"> Current Price: $21,344 </Typography>
+                                <Typography variant="body2" color="text.secondary"> Current Price: ${ETHPrice} </Typography>
                             </CardContent>
                             <CardActions>
                                 <Button href="https://ethereum.org/en/" size="small">Learn More</Button>
@@ -71,27 +79,10 @@ const PriceFeed = () => {
                             </CardMedia>
                             <CardContent>
                                 <Typography gutterBottom variant="h5" component="div"> Chainlink </Typography>
-                                <Typography variant="body2" color="text.secondary"> Current Price: $21,344 </Typography>
+                                <Typography variant="body2" color="text.secondary"> Current Price: ${LINKPrice} </Typography>
                             </CardContent>
                             <CardActions>
                                 <Button href="https://chain.link/" size="small">Learn More</Button>
-                            </CardActions>
-                        </Card>
-                    </ListItem>
-                    <ListItem>
-                        <Card variant="outlined" sx={{ width: 400, maxHeight : 250}}>
-                            <CardMedia
-                                component="img"
-                                height="100"
-                                src={poly}
-                            >
-                            </CardMedia>
-                            <CardContent>
-                                <Typography gutterBottom variant="h5" component="div"> Polygon </Typography>
-                                <Typography variant="body2" color="text.secondary"> Current Price: $21,344 </Typography>
-                            </CardContent>
-                            <CardActions>
-                                <Button href="https://polygon.technology/" size="small">Learn More</Button>
                             </CardActions>
                         </Card>
                     </ListItem>
