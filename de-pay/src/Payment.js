@@ -8,6 +8,15 @@ import TextField from '@mui/material/TextField';
 import Paid from '@mui/icons-material/Paid';
 import {ethers} from "ethers";
 import { useEffect, useState , useRef} from "react";
+import Paper from '@mui/material/Paper';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import Divider from '@mui/material/Divider';
+import CardMedia from '@mui/material/CardMedia';
+import Card from '@mui/material/Card';
 import InputAdornment from '@mui/material/InputAdornment';
 import Message from './Message.js'
 
@@ -86,7 +95,7 @@ const Payment = () => {
 
         console.log("Connected", accounts[0]);
         setCurrentAccount(accounts[0]);
-        setMessage("MetaMask Wallet Already Connected");
+        setMessage("MetaMask Wallet is Connected");
         setType("success")
         setOpen(true);
         } catch (error) {
@@ -147,6 +156,30 @@ const Payment = () => {
                 <Button variant="contained" startIcon={<Paid/>} onClick={payNow}> Pay Now </Button>
                 <Message message={message} type={msgType} open={open} setOpen={setOpen}/> 
             </Stack> 
+            <Divider></Divider>
+            <Typography variant='h4' align='center' color='#283149' fontWeight="bold" sx={{
+                paddingTop : '15px'
+            }}> Recent Transactions </Typography>
+                <Paper elevation={3} sx={{overflow: 'auto', margin: "5px",}}>
+                    <List sx = {{maxHeight: 175}}>
+                        <ListItem>
+                            <ListItemText> Hello World </ListItemText>
+                        </ListItem>
+                        <Divider />
+                        <ListItem>
+                            <ListItemText> Hello World </ListItemText>
+                        </ListItem>
+                        <Divider />
+                        <ListItem>
+                            <ListItemText> Hello World </ListItemText>
+                        </ListItem>
+                        <Divider />
+                        <ListItem>
+                            <ListItemText> Hello World </ListItemText>
+                        </ListItem>
+                        <Divider />
+                    </List>
+                </Paper>
         </Box>
     )
 }

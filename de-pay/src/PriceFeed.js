@@ -17,15 +17,61 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import PriceCards from './PriceCards';
-import { useState } from "react";
+import { useState, useEffect} from "react";
+import {ethers} from "ethers";
+const abi = require("./utils/DePay.json");
+
 
 const PriceFeed = () => {
 
     const [BTCPrice, setBTCPrice] = useState("");
     const [ETHPrice, setETHPrice] = useState("");
     const [LINKPrice, setLINKPrice] = useState("");
+    const [SNXPrice, setSNXPrice] = useState("");
+    const {ethereum} = window;
 
-    //let currentPrices = getContractPrices();
+    const getContractPrices = async() => {
+        try{
+            const { ethereum } = window;
+        } catch(err){
+            console.log("Houston, we have a problem");
+        }
+
+        if (ethereum) {
+            const contractAddress = "0x5c6eC2Ccc4e8f338FCC04Af56F79BF404B168230"
+            const provider = new ethers.providers.Web3Provider(ethereum);
+            const signer = provider.getSigner();
+            const contractABI = abi.abi;
+            const dePayContract = new ethers.Contract(contractAddress, contractABI, signer);
+            let values = await dePayContract.getCurrentPrices();
+            console.log(values[3]);
+            //BTC Price
+            let btc = ethers.utils.formatUnits(values[0].toString(), 8);
+            btc = parseFloat(btc);
+            setBTCPrice(btc.toFixed(2));
+
+            // ETH Price
+            let eth = ethers.utils.formatUnits(values[1].toString(), 8);
+            eth = parseFloat(eth);
+            setETHPrice(eth.toFixed(2));
+
+            // LINK Price
+            let link = ethers.utils.formatUnits(values[2].toString(), 8);
+            link = parseFloat(link);
+            setLINKPrice(link.toFixed(2)); 
+
+            //SNX Price
+            let snx = ethers.utils.formatUnits(values[3].toString(), 8);
+            snx = parseFloat(snx);
+            setSNXPrice(snx.toFixed(2));
+        }
+
+    }
+
+    useEffect(() => {
+        getContractPrices();
+    }, [])
+
 
     return (
     <Box sx={{
@@ -34,59 +80,7 @@ const PriceFeed = () => {
         }} flex={1}>
             <Stack direction="column" spacing={2} alignItems="center" overflow="auto">
                 <Typography variant="h1" align="center" color="white" fontSize={50} fontWeight="bold" paddingTop={5}> Current Price Feed </Typography>
-                <List sx={{maxHeight: 650, overflow: 'auto'}}>
-                    <ListItem>
-                        <Card variant="outlined" sx={{ width: 400, maxHeight : 250}}>
-                            <CardMedia
-                                component="img"
-                                height="100"
-                                src={bitcoin}
-                            >
-                            </CardMedia>
-                            <CardContent>
-                                <Typography gutterBottom variant="h5" component="div"> Bitcoin </Typography>
-                                <Typography variant="body2" color="text.secondary"> Current Price: ${BTCPrice}</Typography>
-                            </CardContent>
-                            <CardActions>
-                                <Button href="https://bitcoin.org/en/" size="small">Learn More</Button>
-                            </CardActions>
-                        </Card>
-                    </ListItem>
-                    <ListItem>
-                        <Card variant="outlined" sx={{ width: 400, maxHeight : 250}}>
-                            <CardMedia
-                                component="img"
-                                height="100"
-                                src={ethereumLogo}
-                            >
-                            </CardMedia>
-                            <CardContent>
-                                <Typography gutterBottom variant="h5" component="div"> Ethereum </Typography>
-                                <Typography variant="body2" color="text.secondary"> Current Price: ${ETHPrice} </Typography>
-                            </CardContent>
-                            <CardActions>
-                                <Button href="https://ethereum.org/en/" size="small">Learn More</Button>
-                            </CardActions>
-                        </Card>
-                    </ListItem>
-                    <ListItem>
-                        <Card variant="outlined" sx={{ width: 400, maxHeight : 250}}>
-                            <CardMedia
-                                component="img"
-                                height="100"
-                                src={chainlink}
-                            >
-                            </CardMedia>
-                            <CardContent>
-                                <Typography gutterBottom variant="h5" component="div"> Chainlink </Typography>
-                                <Typography variant="body2" color="text.secondary"> Current Price: ${LINKPrice} </Typography>
-                            </CardContent>
-                            <CardActions>
-                                <Button href="https://chain.link/" size="small">Learn More</Button>
-                            </CardActions>
-                        </Card>
-                    </ListItem>
-                </List>
+                <PriceCards BTCPrice={BTCPrice} ETHPrice={ETHPrice} LINKPrice={LINKPrice} SNXPrice={SNXPrice}></PriceCards>
             </Stack>
             
         </Box>
