@@ -28,6 +28,8 @@ const PriceFeed = () => {
     const [ETHPrice, setETHPrice] = useState("");
     const [LINKPrice, setLINKPrice] = useState("");
     const [SNXPrice, setSNXPrice] = useState("");
+    const [OILPrice ,setOILPrice] = useState("");
+    const [TSLAPrice ,setTSLAPrice] = useState("");
     const {ethereum} = window;
 
     const getContractPrices = async() => {
@@ -38,13 +40,12 @@ const PriceFeed = () => {
         }
 
         if (ethereum) {
-            const contractAddress = "0xae08cfa86B26Bf2F40EAE37dA821435Bf3568623"
+            const contractAddress = "0x8Df25c3B2FeF66811E8cDe8E09244fB28bcF7046"
             const provider = new ethers.providers.Web3Provider(ethereum);
             const signer = provider.getSigner();
             const contractABI = abi.abi;
             const dePayContract = new ethers.Contract(contractAddress, contractABI, signer);
             let values = await dePayContract.getCurrentPrices();
-            console.log(values[3]);
             //BTC Price
             let btc = ethers.utils.formatUnits(values[0].toString(), 8);
             btc = parseFloat(btc);
@@ -64,6 +65,16 @@ const PriceFeed = () => {
             let snx = ethers.utils.formatUnits(values[3].toString(), 8);
             snx = parseFloat(snx);
             setSNXPrice(snx.toFixed(2));
+
+            //OIL Price
+            let oil = ethers.utils.formatUnits(values[4].toString(), 8);
+            oil = parseFloat(oil);
+            setOILPrice(oil.toFixed(2));
+
+            console.log(values[5]);
+            let tsla = ethers.utils.formatUnits(values[5].toString(), 8);
+            tsla = parseFloat(tsla);
+            setTSLAPrice(tsla.toFixed(2));
         }
 
     }
@@ -80,7 +91,7 @@ const PriceFeed = () => {
         }} flex={1}>
         <Stack spacing={2}>
             <Typography variant="h1" align="center" color="white" fontSize={50} fontWeight="bold" paddingTop={10}> Current Price Feed </Typography>
-            <PriceCards BTCPrice={BTCPrice} ETHPrice={ETHPrice} LINKPrice={LINKPrice} SNXPrice={SNXPrice}></PriceCards>
+            <PriceCards BTCPrice={BTCPrice} ETHPrice={ETHPrice} LINKPrice={LINKPrice} SNXPrice={SNXPrice} OILPrice={OILPrice} TSLAPrice={TSLAPrice}></PriceCards>
         </Stack>
     </Box>
 

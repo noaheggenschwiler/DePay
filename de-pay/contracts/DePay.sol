@@ -13,8 +13,14 @@ contract DePay {
     //LINK Price Feed
     AggregatorV3Interface priceFeedLINK;
 
-    //MATIC Price Feed
+    //Synthetix Price Feed
     AggregatorV3Interface priceFeedSNX;
+
+    //Crude Oil Price Feed
+    AggregatorV3Interface priceFeedOIL;
+
+    //TSLA Price Feed
+    AggregatorV3Interface priceFeedTSLA;
 
     // Struct For Maintaining a Users Recent Transactions
     struct Transaction {
@@ -53,6 +59,14 @@ contract DePay {
         priceFeedSNX = AggregatorV3Interface(
             0x31f93DA9823d737b7E44bdee0DF389Fe62Fd1AcD
         );
+
+        priceFeedOIL = AggregatorV3Interface(
+            0x48c9FF5bFD7D12e3C511022A6E54fB1c5b8DC3Ea
+        );
+
+        priceFeedTSLA = AggregatorV3Interface(
+            0xb31357d152638fd1ae0853d24b9Ea81dF29E3EF2
+        );
     }
 
     //Get Current Price of the 4 Cryptocurrencies that are displayed in DePay
@@ -63,6 +77,8 @@ contract DePay {
             int256,
             int256,
             int256,
+            int256,
+            int256,
             int256
         )
     {
@@ -70,8 +86,10 @@ contract DePay {
         (, int256 priceETH, , , ) = priceFeedETH.latestRoundData();
         (, int256 priceLINK, , , ) = priceFeedLINK.latestRoundData();
         (, int256 priceSNX, , , ) = priceFeedSNX.latestRoundData();
+        (, int256 priceOIL, , , ) = priceFeedOIL.latestRoundData();
+        (, int256 priceTSLA, , , ) = priceFeedTSLA.latestRoundData();
 
-        return (priceBTC, priceETH, priceLINK, priceSNX);
+        return (priceBTC, priceETH, priceLINK, priceSNX, priceOIL, priceTSLA);
     }
 
     function addTransaction(uint256 amount, address reciever) public {
