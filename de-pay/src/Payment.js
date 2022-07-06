@@ -19,6 +19,13 @@ import CardMedia from '@mui/material/CardMedia';
 import Card from '@mui/material/Card';
 import InputAdornment from '@mui/material/InputAdornment';
 import Message from './Message.js'
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+const abi = require("./utils/DePay.json");
 
 const Payment = () => {
     /*
@@ -111,7 +118,7 @@ const Payment = () => {
     const payNow = async () => {
         try{
             if(!window.ethereum){
-            throw new Error("No wallet found, please install it.");
+                throw new Error("No wallet found, please install it.");
             }
             const provider = new ethers.providers.Web3Provider(window.ethereum);
             const signer = provider.getSigner();
@@ -123,6 +130,13 @@ const Payment = () => {
                 to : reciever,
                 value : ethers.utils.parseEther(amountETH),
             })
+
+            //Now Make a State Change To Recent Transactions
+            const contractAddress = '0xae08cfa86B26Bf2F40EAE37dA821435Bf3568623';
+            const contractABI = abi.abi;
+            let contract = new ethers.Contract(contractAddress, contractABI, signer);
+            const tx2 = await contract.addTransaction(ethers.utils.parseEther(amountETH), reciever);
+
             setType("success");
             let successMsg = 'Sucessfully Sent ETH to: \n' + reciever;
             setMessage(successMsg);
@@ -140,6 +154,44 @@ const Payment = () => {
 
         } 
     }
+
+    const columns = [
+        { field: 'id', headerName: 'ID', width: 70 },
+        { field: 'firstName', headerName: 'First name', width: 130 },
+        { field: 'lastName', headerName: 'Last name', width: 130 },
+    ]
+
+    function createData(ethSent, recipientAddress){
+        return {ethSent, recipientAddress}
+    }
+
+    const getData = async() => {
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const contractAddress = '0xae08cfa86B26Bf2F40EAE37dA821435Bf3568623';
+        const contractABI = abi.abi;
+        let contract = new ethers.Contract(contractAddress, contractABI, provider);
+        let counter = await contract.arrayCounter();
+        counter = counter.toNumber();
+        //Create a Temporary List To Pass To Rows
+        let temp = []
+        for(let i = 0; i < counter; i++){
+            let tempValues = await contract.getTransaction(i);
+            let eth = ethers.utils.formatUnits(tempValues[0].toString(), 18);
+            //Amount of ETH Sent
+            eth = parseFloat(eth);
+            // Address Sent To
+            let tempAddress = tempValues[1];
+            createData(eth, tempAddress);
+        }
+    }
+
+    useEffect(() => {
+        getData();
+    }, [])
+
+    let rows = [
+
+    ]
  
     return (
         <Box sx={{
@@ -155,31 +207,31 @@ const Payment = () => {
                 <Button variant="contained" startIcon={<AddCard/>} onClick={connectWallet}> Connect MetaMask Wallet </Button>
                 <Button variant="contained" startIcon={<Paid/>} onClick={payNow}> Pay Now </Button>
                 <Message message={message} type={msgType} open={open} setOpen={setOpen}/> 
-            </Stack> 
-            <Divider></Divider>
-            <Typography variant='h4' align='center' color='#283149' fontWeight="bold" sx={{
-                paddingTop : '15px'
-            }}> Recent Transactions </Typography>
-                <Paper elevation={3} sx={{overflow: 'auto', margin: "5px",}}>
-                    <List sx = {{maxHeight: 175}}>
-                        <ListItem>
-                            <ListItemText> Hello World </ListItemText>
-                        </ListItem>
-                        <Divider />
-                        <ListItem>
-                            <ListItemText> Hello World </ListItemText>
-                        </ListItem>
-                        <Divider />
-                        <ListItem>
-                            <ListItemText> Hello World </ListItemText>
-                        </ListItem>
-                        <Divider />
-                        <ListItem>
-                            <ListItemText> Hello World </ListItemText>
-                        </ListItem>
-                        <Divider />
-                    </List>
+                <Divider></Divider>
+                <Paper elevation={5} sx={{overflow: 'auto', margin: "5px",}}>
+                        <Typography variant='h5' align='center' color='#283149' fontWeight="bold" sx={{
+                            paddingTop : '10px',
+                        }}> Recent Transactions </Typography>
+                    <TableContainer sx={{maxHeight: 175, maxWidth : 600}}>
+                    <Table stickyHeader sx={{overflow:'auto'}}>
+                        <TableHead>
+                            <TableRow>
+                                <TableCell> Amount of ETH</TableCell>
+                                <TableCell align="right">Recipient</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {rows.map((row) => (
+                            <TableRow>
+                                <TableCell align="left">{row.ethSent}</TableCell>
+                                <TableCell align="right">{row.recipientAddress}</TableCell>
+                            </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                    </TableContainer>
                 </Paper>
+                </Stack> 
         </Box>
     )
 }

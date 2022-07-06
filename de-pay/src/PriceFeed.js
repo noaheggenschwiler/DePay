@@ -1,6 +1,6 @@
 import React from 'react';
 import Box from '@mui/material/Box';
-import { CardContent, Typography } from '@mui/material';
+import { CardContent, Typography, Divider } from '@mui/material';
 import Stack from '@mui/material/Stack';
 import Grid from '@mui/material/Grid';
 import Card from "@mui/material/Card";
@@ -38,7 +38,7 @@ const PriceFeed = () => {
         }
 
         if (ethereum) {
-            const contractAddress = "0x5c6eC2Ccc4e8f338FCC04Af56F79BF404B168230"
+            const contractAddress = "0xae08cfa86B26Bf2F40EAE37dA821435Bf3568623"
             const provider = new ethers.providers.Web3Provider(ethereum);
             const signer = provider.getSigner();
             const contractABI = abi.abi;
@@ -78,12 +78,11 @@ const PriceFeed = () => {
             backgroundColor : '#283149',
             height : '100vh',
         }} flex={1}>
-            <Stack direction="column" spacing={2} alignItems="center" overflow="auto">
-                <Typography variant="h1" align="center" color="white" fontSize={50} fontWeight="bold" paddingTop={5}> Current Price Feed </Typography>
-                <PriceCards BTCPrice={BTCPrice} ETHPrice={ETHPrice} LINKPrice={LINKPrice} SNXPrice={SNXPrice}></PriceCards>
-            </Stack>
-            
-        </Box>
+        <Stack spacing={2}>
+            <Typography variant="h1" align="center" color="white" fontSize={50} fontWeight="bold" paddingTop={10}> Current Price Feed </Typography>
+            <PriceCards BTCPrice={BTCPrice} ETHPrice={ETHPrice} LINKPrice={LINKPrice} SNXPrice={SNXPrice}></PriceCards>
+        </Stack>
+    </Box>
 
     )
 }

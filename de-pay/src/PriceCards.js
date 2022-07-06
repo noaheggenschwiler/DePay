@@ -16,9 +16,9 @@ import ListItem from '@mui/material/ListItem';
 
 const PriceCards = ({BTCPrice, ETHPrice, LINKPrice, SNXPrice}) => {
     return (
-        <List sx={{maxHeight: 650, overflow: 'auto'}}>
-            <ListItem>
-                <Card variant="outlined" sx={{ width: 400, maxHeight : 250}}>
+        <Grid container paddingLeft={4} spacing={4} sx={{maxHeight: 700, overflow: 'auto'}}>
+            <Grid item>
+                <Card variant="outlined" sx={{minWidth: 200, height : 250}}>
                     <CardMedia
                         component="img"
                         height="100"
@@ -33,9 +33,9 @@ const PriceCards = ({BTCPrice, ETHPrice, LINKPrice, SNXPrice}) => {
                         <Button href="https://bitcoin.org/en/" size="small">Learn More</Button>
                     </CardActions>
                 </Card>
-            </ListItem>
-            <ListItem>
-                <Card variant="outlined" sx={{ width: 400, maxHeight : 250}}>
+            </Grid>
+            <Grid item>
+                <Card variant="outlined" sx={{ minWidth: 200, height : 250}}>
                     <CardMedia
                         component="img"
                         height="100"
@@ -48,11 +48,11 @@ const PriceCards = ({BTCPrice, ETHPrice, LINKPrice, SNXPrice}) => {
                     </CardContent>
                     <CardActions>
                         <Button href="https://ethereum.org/en/" size="small">Learn More</Button>
-                    </CardActions>
+                    </CardActions> 
                 </Card>
-            </ListItem>
-            <ListItem>
-                <Card variant="outlined" sx={{ width: 400, maxHeight : 250}}>
+            </Grid>
+            <Grid item>
+                <Card variant="outlined" sx={{minWidth: 200, height : 250}}>
                     <CardMedia
                         component="img"
                         height="100"
@@ -67,9 +67,9 @@ const PriceCards = ({BTCPrice, ETHPrice, LINKPrice, SNXPrice}) => {
                         <Button href="https://chain.link/" size="small">Learn More</Button>
                     </CardActions>
                 </Card>
-            </ListItem>
-            <ListItem>
-                <Card variant="outlined" sx={{ width: 400, maxHeight : 250}}>
+            </Grid>
+            <Grid item>
+                <Card variant="outlined" sx={{ minWidth: 200, height : 250}}>
                     <CardMedia
                         component="img"
                         height="100"
@@ -84,8 +84,76 @@ const PriceCards = ({BTCPrice, ETHPrice, LINKPrice, SNXPrice}) => {
                         <Button href="https://synthetix.io/" size="small">Learn More</Button>
                     </CardActions>
                 </Card>
-            </ListItem>
-        </List>
+            </Grid>
+                        <Grid item>
+                <Card variant="outlined" sx={{minWidth: 200, height : 250}}>
+                    <CardMedia
+                        component="img"
+                        height="100"
+                        src={bitcoin}
+                    >
+                    </CardMedia>
+                    <CardContent>
+                        <Typography gutterBottom variant="h5" component="div"> Bitcoin </Typography>
+                        <Typography variant="body2" color="text.secondary"> Current Price: ${BTCPrice}</Typography>
+                    </CardContent>
+                    <CardActions>
+                        <Button href="https://bitcoin.org/en/" size="small">Learn More</Button>
+                    </CardActions>
+                </Card>
+            </Grid>
+            <Grid item>
+                <Card variant="outlined" sx={{ minWidth: 200, height : 250}}>
+                    <CardMedia
+                        component="img"
+                        height="100"
+                        src={ethereumLogo}
+                    >
+                    </CardMedia>
+                    <CardContent>
+                        <Typography gutterBottom variant="h5" component="div"> Ethereum </Typography>
+                        <Typography variant="body2" color="text.secondary"> Current Price: ${ETHPrice} </Typography>
+                    </CardContent>
+                    <CardActions>
+                        <Button href="https://ethereum.org/en/" size="small">Learn More</Button>
+                    </CardActions> 
+                </Card>
+            </Grid>
+            <Grid item>
+                <Card variant="outlined" sx={{minWidth: 200, height : 250}}>
+                    <CardMedia
+                        component="img"
+                        height="100"
+                        src={chainlink}
+                    >
+                    </CardMedia>
+                    <CardContent>
+                        <Typography gutterBottom variant="h5" component="div"> Chainlink </Typography>
+                        <Typography variant="body2" color="text.secondary"> Current Price: ${LINKPrice} </Typography>
+                    </CardContent>
+                    <CardActions>
+                        <Button href="https://chain.link/" size="small">Learn More</Button>
+                    </CardActions>
+                </Card>
+            </Grid>
+            <Grid item>
+                <Card variant="outlined" sx={{ minWidth: 200, height : 250}}>
+                    <CardMedia
+                        component="img"
+                        height="100"
+                        src={synthetix}
+                    >
+                    </CardMedia>
+                    <CardContent>
+                        <Typography gutterBottom variant="h5" component="div"> Synthetix </Typography>
+                        <Typography variant="body2" color="text.secondary"> Current Price: ${SNXPrice} </Typography>
+                    </CardContent>
+                    <CardActions>
+                        <Button href="https://synthetix.io/" size="small">Learn More</Button>
+                    </CardActions>
+                </Card>
+            </Grid>
+        </Grid>
     )
 }
 

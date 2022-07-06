@@ -11,24 +11,31 @@ import CardMedia from '@mui/material/CardMedia';
 import Card from '@mui/material/Card';
 import logo from './images/Logo.png';
 import { Typography } from '@mui/material';
-
+import useEffect from "react";
+import Button from '@mui/material/Button';
+import ResearchPaper from "./ResearchPaper";
+import Research from "./Research"; 
+import Stack from '@mui/material/Stack';
 
 const LeftPanel = () => {
+
+
     return (
         <Box sx={{
             backgroundColor : '#283149',
             height : '100vh',
         }} flex={1}>
+            <Stack>
             <CardMedia 
                 component="img"
                 height="160"
                 src={logo}
             ></CardMedia>
             <Typography variant='h4' align='center' color='white' sx={{
-                paddingTop : '20px'
+                paddingTop : '20px', paddingBottom : '20px'
             }}> Recent Research Papers </Typography>
-            <Paper elevation={3} sx={{overflow: 'auto', margin: "10px",}}>
-            </Paper>
+            <Research color="white"></Research>
+            </Stack>
         </Box>
     )
 }

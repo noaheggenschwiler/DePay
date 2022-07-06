@@ -16,8 +16,24 @@ contract DePay {
     //MATIC Price Feed
     AggregatorV3Interface priceFeedSNX;
 
+    // Struct For Maintaining a Users Recent Transactions
+    struct Transaction {
+        uint256 amount;
+        address reciever;
+    }
+
+    // Array of Recent Transactions that Occurred on Depay
+    // This wouldn't be scalable in a production environment
+    // Therefore, only keeping the 5 most recent transactions
+    Transaction[] public recentTransactions;
+
+    //Counter for Length of the Array (Needed in Frontend)
+    uint256 public arrayCounter;
+
     //Constructor
     constructor() {
+        arrayCounter = 0;
+
         //BTC Price Feed
         priceFeedBTC = AggregatorV3Interface(
             0x6135b13325bfC4B00278B4abC5e20bbce2D6580e
@@ -56,5 +72,34 @@ contract DePay {
         (, int256 priceSNX, , , ) = priceFeedSNX.latestRoundData();
 
         return (priceBTC, priceETH, priceLINK, priceSNX);
+    }
+
+    function addTransaction(uint256 amount, address reciever) public {
+        Transaction memory temp = Transaction(amount, reciever);
+
+        if (recentTransactions.length == 5) {
+            //Array is Too Long, Remove the Oldest Transaction
+            for (uint256 i = 0; i < recentTransactions.length - 1; i++) {
+                recentTransactions[i] = recentTransactions[i + 1];
+            }
+            //Then Add Newest Transaction To End Of Array
+            recentTransactions[4] = temp;
+        } else {
+            recentTransactions.push(temp);
+            // Only Increasing in this section because it will reach maximum
+            // Assigning in above if statement is a waste of gas
+            arrayCounter += 1;
+        }
+    }
+
+    function getTransaction(uint256 _index)
+        public
+        view
+        returns (uint256, address)
+    {
+        return (
+            recentTransactions[_index].amount,
+            recentTransactions[_index].reciever
+        );
     }
 }
