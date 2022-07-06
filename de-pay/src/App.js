@@ -3,7 +3,6 @@ import './App.css';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import LeftPanel from './LeftPanel.js';
 import PriceFeed from './PriceFeed.js';

@@ -1,6 +1,6 @@
 import React from 'react';
 import Box from '@mui/material/Box';
-import { CardContent, Typography } from '@mui/material';
+import { CardContent, Typography, Divider } from '@mui/material';
 import Stack from '@mui/material/Stack';
 import Grid from '@mui/material/Grid';
 import Card from "@mui/material/Card";
@@ -16,89 +16,73 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
+import PriceCards from './PriceCards';
+import { useState, useEffect} from "react";
+import {ethers} from "ethers";
+const abi = require("./utils/DePay.json");
 
 
 const PriceFeed = () => {
+
+    const [BTCPrice, setBTCPrice] = useState("");
+    const [ETHPrice, setETHPrice] = useState("");
+    const [LINKPrice, setLINKPrice] = useState("");
+    const [SNXPrice, setSNXPrice] = useState("");
+    const {ethereum} = window;
+
+    const getContractPrices = async() => {
+        try{
+            const { ethereum } = window;
+        } catch(err){
+            console.log("Houston, we have a problem");
+        }
+
+        if (ethereum) {
+            const contractAddress = "0xae08cfa86B26Bf2F40EAE37dA821435Bf3568623"
+            const provider = new ethers.providers.Web3Provider(ethereum);
+            const signer = provider.getSigner();
+            const contractABI = abi.abi;
+            const dePayContract = new ethers.Contract(contractAddress, contractABI, signer);
+            let values = await dePayContract.getCurrentPrices();
+            console.log(values[3]);
+            //BTC Price
+            let btc = ethers.utils.formatUnits(values[0].toString(), 8);
+            btc = parseFloat(btc);
+            setBTCPrice(btc.toFixed(2));
+
+            // ETH Price
+            let eth = ethers.utils.formatUnits(values[1].toString(), 8);
+            eth = parseFloat(eth);
+            setETHPrice(eth.toFixed(2));
+
+            // LINK Price
+            let link = ethers.utils.formatUnits(values[2].toString(), 8);
+            link = parseFloat(link);
+            setLINKPrice(link.toFixed(2)); 
+
+            //SNX Price
+            let snx = ethers.utils.formatUnits(values[3].toString(), 8);
+            snx = parseFloat(snx);
+            setSNXPrice(snx.toFixed(2));
+        }
+
+    }
+
+    useEffect(() => {
+        getContractPrices();
+    }, [])
+
+
     return (
     <Box sx={{
             backgroundColor : '#283149',
             height : '100vh',
         }} flex={1}>
-            <Stack direction="column" spacing={2} alignItems="center" overflow="auto">
-                <Typography variant="h1" align="center" color="white" fontSize={50} fontWeight="bold" paddingTop={5}> Current Price Feed </Typography>
-                <List sx={{maxHeight: 650, overflow: 'auto'}}>
-                    <ListItem>
-                        <Card variant="outlined" sx={{ width: 400, maxHeight : 250}}>
-                            <CardMedia
-                                component="img"
-                                height="100"
-                                src={bitcoin}
-                            >
-                            </CardMedia>
-                            <CardContent>
-                                <Typography gutterBottom variant="h5" component="div"> Bitcoin </Typography>
-                                <Typography variant="body2" color="text.secondary"> Current Price: $21,344</Typography>
-                            </CardContent>
-                            <CardActions>
-                                <Button href="https://bitcoin.org/en/" size="small">Learn More</Button>
-                            </CardActions>
-                        </Card>
-                    </ListItem>
-                    <ListItem>
-                        <Card variant="outlined" sx={{ width: 400, maxHeight : 250}}>
-                            <CardMedia
-                                component="img"
-                                height="100"
-                                src={ethereumLogo}
-                            >
-                            </CardMedia>
-                            <CardContent>
-                                <Typography gutterBottom variant="h5" component="div"> Ethereum </Typography>
-                                <Typography variant="body2" color="text.secondary"> Current Price: $21,344 </Typography>
-                            </CardContent>
-                            <CardActions>
-                                <Button href="https://ethereum.org/en/" size="small">Learn More</Button>
-                            </CardActions>
-                        </Card>
-                    </ListItem>
-                    <ListItem>
-                        <Card variant="outlined" sx={{ width: 400, maxHeight : 250}}>
-                            <CardMedia
-                                component="img"
-                                height="100"
-                                src={chainlink}
-                            >
-                            </CardMedia>
-                            <CardContent>
-                                <Typography gutterBottom variant="h5" component="div"> Chainlink </Typography>
-                                <Typography variant="body2" color="text.secondary"> Current Price: $21,344 </Typography>
-                            </CardContent>
-                            <CardActions>
-                                <Button href="https://chain.link/" size="small">Learn More</Button>
-                            </CardActions>
-                        </Card>
-                    </ListItem>
-                    <ListItem>
-                        <Card variant="outlined" sx={{ width: 400, maxHeight : 250}}>
-                            <CardMedia
-                                component="img"
-                                height="100"
-                                src={poly}
-                            >
-                            </CardMedia>
-                            <CardContent>
-                                <Typography gutterBottom variant="h5" component="div"> Polygon </Typography>
-                                <Typography variant="body2" color="text.secondary"> Current Price: $21,344 </Typography>
-                            </CardContent>
-                            <CardActions>
-                                <Button href="https://polygon.technology/" size="small">Learn More</Button>
-                            </CardActions>
-                        </Card>
-                    </ListItem>
-                </List>
-            </Stack>
-            
-        </Box>
+        <Stack spacing={2}>
+            <Typography variant="h1" align="center" color="white" fontSize={50} fontWeight="bold" paddingTop={10}> Current Price Feed </Typography>
+            <PriceCards BTCPrice={BTCPrice} ETHPrice={ETHPrice} LINKPrice={LINKPrice} SNXPrice={SNXPrice}></PriceCards>
+        </Stack>
+    </Box>
 
     )
 }
