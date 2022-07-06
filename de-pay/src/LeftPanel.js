@@ -13,7 +13,6 @@ import logo from './images/Logo.png';
 import { Typography } from '@mui/material';
 import useEffect from "react";
 import Button from '@mui/material/Button';
-import ResearchPaper from "./ResearchPaper";
 import Research from "./Research"; 
 import Stack from '@mui/material/Stack';
 
