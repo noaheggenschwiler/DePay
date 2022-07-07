@@ -19,7 +19,7 @@ class Research extends React.Component {
     constructor(){
         super();
         try{
-            axios.get("http://export.arxiv.org/api/query?search_query=blockchain&sortBy=lastUpdatedDate&sortOrder=descending&start=0&max_results=20")
+            axios.get("https://export.arxiv.org/api/query?search_query=blockchain&sortBy=lastUpdatedDate&sortOrder=descending&start=0&max_results=20")
             .then(res => {
                 let data = res.data;
                 let domparser = new DOMParser();
