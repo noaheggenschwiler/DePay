@@ -6,6 +6,11 @@ DePay is a decentralized dashboard that utilizes the Ethereum blockchain as its 
 
 Contract Address: 0x8Df25c3B2FeF66811E8cDe8E09244fB28bcF7046
 
+## Hosting:
+Website Can Be Found At: https://noaheggenschwiler.github.io/DePay/ <br>
+
+Please note that your MetaMask wallet must be connected to recieve the price feeds.
+
 ## Key Features:
 **Recent Research Papers**: The left-hand side of the application displays the 20 most recent Arxiv pre-prints that contain the subject blockchain.
 
