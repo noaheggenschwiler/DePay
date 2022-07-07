@@ -12,6 +12,4 @@ Contract Address: 0x8Df25c3B2FeF66811E8cDe8E09244fB28bcF7046
 **Payment System**: The middle of the application allows a user to connect their metamask wallet and send ETH to users. Below that is a list of recent transactions that have occured on the DePay Application. This list is maintained within the smart contract, and does incur a slight fee. This method would not be scalable, as you wouldn't want to store data that type of data on-chain, however, this was just a proof-of-concept to learn solidity. In order to keep data capacity low on-chain, only the 5 most recent transactions are stored.
 
 **Chainlink Price Feeds**: The right-hand side of the application displays recent prices in certain various cryptocurrencies, commodities, and stocks. I just used the price feeds that were available to me on the Kovan testnet.
- 
- 
-## User Guide:
+
