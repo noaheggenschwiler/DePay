@@ -49,6 +49,13 @@ const Payment = () => {
     //Used For Opening Error Messages
     const [open, setOpen] = useState(true);
 
+    const [headers, setHeaders] = useState([]);
+    const [rows, setRows] = useState([]);
+
+    const currentAddress = "0x8Df25c3B2FeF66811E8cDe8E09244fB28bcF7046"
+
+    //let rows = [{ethSent : "0.005", recipientAddress : "0xdlwkfjwe;lfkj"}];
+
     //On Change Of Amount ETH Entered
     const handleAmountETHChange = event => {
         setAmountETH(event.target.value);
@@ -111,7 +118,7 @@ const Payment = () => {
     }
 
     useEffect(() => {
-    checkIfWalletIsConnected();
+        checkIfWalletIsConnected();
     }, [])
 
     // Need To Implement the Pay Function
@@ -132,7 +139,7 @@ const Payment = () => {
             })
 
             //Now Make a State Change To Recent Transactions
-            const contractAddress = '0xae08cfa86B26Bf2F40EAE37dA821435Bf3568623';
+            const contractAddress = currentAddress;
             const contractABI = abi.abi;
             let contract = new ethers.Contract(contractAddress, contractABI, signer);
             const tx2 = await contract.addTransaction(ethers.utils.parseEther(amountETH), reciever);
@@ -141,6 +148,8 @@ const Payment = () => {
             let successMsg = 'Sucessfully Sent ETH to: \n' + reciever;
             setMessage(successMsg);
             setOpen(true);
+            getData();
+
         } catch(err){
             console.log(err.message);
             setOpen(true);
@@ -161,13 +170,13 @@ const Payment = () => {
         { field: 'lastName', headerName: 'Last name', width: 130 },
     ]
 
-    function createData(ethSent, recipientAddress){
-        return {ethSent, recipientAddress}
+    function createData(ethSentCopy, recipientAddressCopy){
+        return {ethSent : ethSentCopy, recipientAddress : recipientAddressCopy}
     }
 
     const getData = async() => {
         const provider = new ethers.providers.Web3Provider(window.ethereum);
-        const contractAddress = '0xae08cfa86B26Bf2F40EAE37dA821435Bf3568623';
+        const contractAddress = currentAddress;
         const contractABI = abi.abi;
         let contract = new ethers.Contract(contractAddress, contractABI, provider);
         let counter = await contract.arrayCounter();
@@ -181,18 +190,19 @@ const Payment = () => {
             eth = parseFloat(eth);
             // Address Sent To
             let tempAddress = tempValues[1];
-            createData(eth, tempAddress);
+            temp.push(createData(eth, tempAddress));
         }
+
+        temp.reverse();
+
+        setRows(temp);
     }
 
     useEffect(() => {
         getData();
-    }, [])
+    })
 
-    let rows = [
 
-    ]
- 
     return (
         <Box sx={{
             backgroundColor : 'white',
@@ -201,7 +211,7 @@ const Payment = () => {
             <Stack direction="column" spacing={4}>
                 <Typography variant="h1" align="center" color="#283149" fontSize={50} fontWeight="bold" paddingTop={5}> Pay Friends on the Internet </Typography>
                 <TextField id="outlined-basic" label="Amount of ETH" required variant="outlined" value={amountETH} onChange={handleAmountETHChange}
-                 InputProps={{
+                InputProps={{
                     startAdornment: <InputAdornment position="start">ETH: </InputAdornment>,}} />
                 <TextField id="outlined-basic" label="Recipient Address" required variant="outlined" value={reciever} onChange={handleRecieverChange} />
                 <Button variant="contained" startIcon={<AddCard/>} onClick={connectWallet}> Connect MetaMask Wallet </Button>
@@ -212,7 +222,7 @@ const Payment = () => {
                         <Typography variant='h5' align='center' color='#283149' fontWeight="bold" sx={{
                             paddingTop : '10px',
                         }}> Recent Transactions </Typography>
-                    <TableContainer sx={{maxHeight: 175, maxWidth : 600}}>
+                    <TableContainer sx={{maxHeight: 220, maxWidth : 600}}>
                     <Table stickyHeader sx={{overflow:'auto'}}>
                         <TableHead>
                             <TableRow>
@@ -221,11 +231,11 @@ const Payment = () => {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {rows.map((row) => (
-                            <TableRow>
-                                <TableCell align="left">{row.ethSent}</TableCell>
-                                <TableCell align="right">{row.recipientAddress}</TableCell>
-                            </TableRow>
+                            {rows.reverse().map((row) => (
+                                <TableRow key={row.index}>
+                                    <TableCell> {row.ethSent} </TableCell>
+                                    <TableCell align="right"> {row.recipientAddress}</TableCell>
+                                </TableRow>
                             ))}
                         </TableBody>
                     </Table>
@@ -234,6 +244,7 @@ const Payment = () => {
                 </Stack> 
         </Box>
     )
+
 }
 
 export default Payment;
