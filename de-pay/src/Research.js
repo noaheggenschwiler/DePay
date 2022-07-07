@@ -47,7 +47,6 @@ class Research extends React.Component {
 
     render() {
         let cardList = [];
-        console.log(this.state);
         for(let i = 0; i < this.state.titles.length; i++ ){
             cardList.push(
                 <ListItem>
