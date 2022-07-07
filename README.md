@@ -22,5 +22,17 @@ $ git clone https://github.com/noaheggenschwiler/DePay.git
 ```
 
 2. Change Directory To de-pay: <br>
+```
+$ cd de-pay
+```
 
+3. Install Dependencies: <br>
+```
+$ npm install
+```
+
+4. Run Locally: <br>
+```
+$ npm start
+```
 
