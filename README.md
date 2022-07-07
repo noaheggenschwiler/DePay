@@ -13,3 +13,14 @@ Contract Address: 0x8Df25c3B2FeF66811E8cDe8E09244fB28bcF7046
 
 **Chainlink Price Feeds**: The right-hand side of the application displays recent prices in certain various cryptocurrencies, commodities, and stocks. I just used the price feeds that were available to me on the Kovan testnet.
 
+## Setup Guide:
+Must have npm installed.
+
+1. Clone Repository: <br>
+```
+$ git clone https://github.com/noaheggenschwiler/DePay.git
+```
+
+2. Change Directory To de-pay: <br>
+
+
