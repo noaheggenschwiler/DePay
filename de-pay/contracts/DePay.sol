@@ -3,6 +3,11 @@ pragma solidity ^0.8.0;
 import "hardhat/console.sol";
 import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 
+/**
+ * DePay Contract
+ * Utilizes Chainlink AggregatorV3Interface to retrun price feeds that are fed to the front-end
+ * Additionally maintains a list of recent transactions that have occured on the DePay application
+ */
 contract DePay {
     //Bitcoin Price
     AggregatorV3Interface priceFeedBTC;
@@ -22,7 +27,7 @@ contract DePay {
     //TSLA Price Feed
     AggregatorV3Interface priceFeedTSLA;
 
-    // Struct For Maintaining a Users Recent Transactions
+    // Struct For Maintaining a Recent Transactions
     struct Transaction {
         uint256 amount;
         address reciever;
@@ -69,7 +74,10 @@ contract DePay {
         );
     }
 
-    //Get Current Price of the 4 Cryptocurrencies that are displayed in DePay
+    /**
+     * Get Current Price of the Cryptocurrencies, Commodities, Stock, that are displayed in DePay
+     * @return - price of the above mentioned values
+     */
     function getCurrentPrices()
         public
         view
@@ -92,6 +100,11 @@ contract DePay {
         return (priceBTC, priceETH, priceLINK, priceSNX, priceOIL, priceTSLA);
     }
 
+    /**
+     * Add the most recent transaction to the array of transactions
+     * @param amount - amount of ETH that was sent in transaction
+     * @param reciever - address that recieved the ETH
+     */
     function addTransaction(uint256 amount, address reciever) public {
         Transaction memory temp = Transaction(amount, reciever);
 
@@ -110,6 +123,11 @@ contract DePay {
         }
     }
 
+    /**
+     * View only function that gets the transaction in the array based on the index
+     * @param _index - index in the array
+     * @return amount of ETH sent and the address that recieved the ETH
+     */
     function getTransaction(uint256 _index)
         public
         view
